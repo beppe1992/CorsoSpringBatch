@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+	<import resource="job.xml" />
+
+	<batch:job-repository id="jobRepository" />
+	
+	<batch:job id="skipSampleWithReportJob"  restartable="false">
+		<batch:step id="step">
+			<batch:tasklet>
+				<batch:chunk reader="sampleReader" processor="sampleProcessor" writer="sampleWriter" commit-interval="50" skip-policy="skipPolicy"/>
+				<batch:listeners>
+					<batch:listener ref="skipListener"></batch:listener>
+					<batch:listener ref="stepListener"></batch:listener>
+				</batch:listeners>
+			</batch:tasklet>
+			<batch:next on="COMPLETED WITH SKIPS" to="generateReport"/>
+		</batch:step>
+		<batch:step id="generateReport" >
+			<batch:tasklet ref="skippedItemReportStep" />
+		</batch:step> 		
+	</batch:job>
+		
+	<bean id="sampleReader" class="it.addvalue.example06.reader.SampleReader" >
+	</bean>
+	
+	<bean id="sampleProcessor" class="it.addvalue.example06.processor.SampleProcessorSkipProcessor" >
+	</bean>
+	
+	<bean id="sampleWriter" class="it.addvalue.example06.writer.SampleWriter" >
+		<property name="sampleDao" ref="sampleDao"></property>
+	</bean>
+
+	<bean id="sampleDao" class="it.addvalue.example06.dao.SampleDaoImpl">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="skipPolicy" class="it.addvalue.example06.SampleSkipPolicy"/>
+ 
+	<bean id="skipListener" class="it.addvalue.example06.SampleSkipListener" parent="baseElement" scope="step">
+		<property name="skipItemsDao" ref="skipItemsDao"/>
+		<property name="jobExecutionId" value="#{stepExecutionContext['jobExecutionId']}" />
+		<property name="stepExecutionId" value="#{stepExecutionContext['stepExecutionId']}" />
+		<property name="jobName" value="#{stepExecutionContext['jobName']}" />
+	</bean>
+ 	<bean id="skipItemsDao" class="it.addvalue.example06.dao.SkipItemsDaoImpl">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+ 
+    <bean id="baseElement" class="it.addvalue.example06.BaseElement" abstract="true"/>
+    
+ 	<bean id="stepListener" class="it.addvalue.example06.SampleStepExecutionListener"/>
+ 
+ 	<bean id="skippedItemReportStep" class="it.addvalue.example06.SkippedItemReportStep">
+ 		<property name="infrastructureService" ref="infrastructureService"/>
+ 	</bean>
+ 	
+ 	<bean id="infrastructureService" class="it.addvalue.example06.service.InfrastructureServiceImpl"/>
+ 	
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" -->
+<!-- 		destroy-method="close" lazy-init="true"> -->
+<!-- 		<property name="driverClassName" value="org.sqlite.JDBC" /> -->
+<!-- 		<property name="url" value="jdbc:sqlite:skipSampleWithReport.db" /> -->
+<!-- 		<property name="initialSize" value="2" /> -->
+<!-- 		<property name="maxActive" value="20" /> -->
+<!-- 		<property name="maxIdle" value="5" /> -->
+<!-- 		<property name="poolPreparedStatements" value="true" /> -->
+<!-- 	</bean> -->
+	
+<!-- 	<jdbc:initialize-database data-source="dataSource"> -->
+<!-- 		<jdbc:script location="classpath:/sql/prepareSpringTablesSqlLite.sql" /> -->
+<!--  		<jdbc:script location="classpath:/sql/prepareSampleTableSqlLite.sql" />  -->
+<!--  		<jdbc:script location="classpath:/sql/prepareSkipItemsTableSqlLite.sql" />  -->
+<!-- 	</jdbc:initialize-database> -->
+
+	<jdbc:embedded-database id="dataSource">
+		<jdbc:script location="classpath:/sql/prepareSpringTablesInRamDB.sql" />
+		<jdbc:script location="classpath:/sql/prepareSampleTableInRamDB.sql" />
+		<jdbc:script location="classpath:/sql/prepareSkipItemsTableInRamDB.sql" />
+	</jdbc:embedded-database>
+
+</beans>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/p http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<import resource="job.xml" />
+
+	<job id="slqLiteSortDBTest" xmlns="http://www.springframework.org/schema/batch"
+		job-repository="jobRepository">
+
+		<step id="Sort_1">
+			<tasklet ref="sortTasklet1" />
+		</step>
+	</job>
+
+	<bean id="sortTasklet1" class="it.addvalue.example04.SqlLiteSortTasklet">
+		<property name="reader" ref="reader1" />
+		<property name="writer" ref="writer1" />
+		<property name="keyGenerator" ref="keyGenerator1" />
+		<property name="dataSource" ref="sqlLiteDataSource" />
+	</bean>
+
+	<bean id="keyGenerator1"
+		class="it.addvalue.example04.impl.key.SimpleSortKeyGeneratorImpl">
+	</bean>
+
+	<bean id="sqlLiteDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" lazy-init="true">
+		<property name="driverClassName" value="org.sqlite.JDBC" />
+		<property name="url" value="jdbc:sqlite:sample.db" />
+		<property name="initialSize" value="2" />
+		<property name="maxActive" value="20" />
+		<property name="maxIdle" value="5" />
+		<property name="poolPreparedStatements" value="true" />
+	</bean>
+	
+	<jdbc:initialize-database data-source="sqlLiteDataSource">
+		<jdbc:script location="classpath:/sql/sort_SqlLiteDBPrepareTables.sql" />
+	</jdbc:initialize-database>
+
+	<bean id="reader1" class="org.springframework.batch.item.file.FlatFileItemReader"
+		scope="step">
+		<property name="lineMapper" ref="stlm" />
+		<property name="resource" value="file:C:/txtGen/000.txt" />
+	</bean>
+
+	<bean id="writer1" class="org.springframework.batch.item.file.FlatFileItemWriter"
+		scope="step">
+		<property name="resource" value="file:C:/txtGen/out/outReflComp1.txt" />
+		<property name="lineAggregator" ref="stla" />
+	</bean>
+
+	<bean id="stla"
+		class="it.addvalue.example04.SimpleTestLineAggregator" />
+
+	<bean id="stlm"
+		class="it.addvalue.example04.SimpleTestLineMapper" />
+
+</beans>
