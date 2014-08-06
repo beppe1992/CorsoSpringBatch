@@ -23,7 +23,7 @@ import com.arca.danni.utils.springbatch.integrationtest.BaseIntegrationTest;
 
 /**
  * Test d'integrazione dell'intero job in Ram
- * Pluto
+ *
  * @author Nicol&oacute; Tacconi - addvalue
  */
 @ContextConfiguration(locations = { "classpath:myJob.xml" })
