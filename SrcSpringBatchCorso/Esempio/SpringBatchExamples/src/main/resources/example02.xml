@@ -27,12 +27,12 @@
 	<bean id="reader1" class="org.springframework.batch.item.file.FlatFileItemReader"
 		scope="step">
 		<property name="lineMapper" ref="stlm" />
-		<property name="resource" value="file:C:/txtGen/000.txt" />
+		<property name="resource" value="classpath:file/Input.txt" />
 	</bean>
 
 	<bean id="writer1" class="org.springframework.batch.item.file.FlatFileItemWriter"
 		scope="step">
-		<property name="resource" value="file:C:/txtGen/out/outReflComp1.txt" />
+		<property name="resource" value="file:C:/txtGen/out/outFileCopy.txt" />
 		<property name="lineAggregator" ref="stla" />
 	</bean>
 

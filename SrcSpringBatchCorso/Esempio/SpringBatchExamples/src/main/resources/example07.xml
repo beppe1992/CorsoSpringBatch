@@ -18,7 +18,7 @@
 			<batch:tasklet>
 				<batch:chunk reader="sampleReader" processor="sampleProcessor"
 					writer="sampleWriter" commit-interval="50" skip-policy="skipPolicy"
-					retry-policy="retryPolicy" retry-limit="10">
+					retry-policy="retryPolicy" retry-limit="2">
 					<batch:retryable-exception-classes>
 						<batch:include class="it.addvalue.example07.SampleRetryException" />
 					</batch:retryable-exception-classes>

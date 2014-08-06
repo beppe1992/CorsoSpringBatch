@@ -1,5 +1,6 @@
 package it.addvalue.example07.processor;
 
+import it.addvalue.example07.SampleRetryException;
 import it.addvalue.example07.SampleSkipException;
 import it.addvalue.example07.model.Sample;
 
@@ -14,6 +15,12 @@ public class SampleProcessorSkipProcessor extends SampleProcessor implements Ite
 		if(id==45){
 			return null;
 		}
+		
+		// se decommento viene rilanciata la retry policy
+//		if(id==95){
+//			throw new SampleRetryException(); 
+//		}
+		
 		//Skip this element
 		if(id==95){
 			throw new SampleSkipException(); 

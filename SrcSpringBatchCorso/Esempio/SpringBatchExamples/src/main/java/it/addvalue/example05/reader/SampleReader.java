@@ -1,26 +1,29 @@
 package it.addvalue.example05.reader;
 
 import org.springframework.batch.item.ItemReader;
+import org.springframework.beans.factory.InitializingBean;
 
-public class SampleReader implements ItemReader<String> {
+public class SampleReader implements ItemReader<String>, InitializingBean {
 
-	static String[] array = new String[100];
-	static {
+	String[] array = new String[100];
+
+	public void afterPropertiesSet() throws Exception {
 		for (int i = 0; i < 100; i++) {
-			array[i] = new String("Name:"+i);
+			array[i] = new String("Name:" + i);
 		}
+
 	}
-	
+
 	static int readIndex = -1;
-	
-	public String read()  {
+
+	public String read() {
+		
 		readIndex++;
-		if (readIndex>=array.length) {
-			readIndex=-1;
+		if (readIndex >= array.length - 1) {
+			readIndex = -1;
 			return null;
 		}
 		return array[readIndex];
 	}
 
 }
-

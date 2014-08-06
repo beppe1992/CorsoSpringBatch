@@ -18,12 +18,16 @@ public class SampleProcessorSkipProcessor extends SampleProcessor implements Ite
 		//Retry
 		else if(id==65)
 		{
+			System.out.println("Riprovo");
 			throw new SampleRetryException();
 		}
 		//Skip this element
 		else if(id==95){
 			throw new SampleSkipException(); 
 		}
+			
+		System.out.println("Process "+id);
+		
 		return sample;
 	}
 }

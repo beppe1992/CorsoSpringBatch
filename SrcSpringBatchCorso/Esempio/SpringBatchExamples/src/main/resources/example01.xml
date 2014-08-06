@@ -1,31 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans 
-http://www.springframework.org/schema/beans/spring-beans-2.1.xsd
-		http://www.springframework.org/schema/batch 
-http://www.springframework.org/schema/batch/spring-batch-2.1.xsd
-		http://www.springframework.org/schema/aop 
-http://www.springframework.org/schema/aop/spring-aop-2.1.xsd
-		http://www.springframework.org/schema/tx 
-http://www.springframework.org/schema/tx/spring-tx-2.1.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/p http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
 	<import resource="job.xml" />
 
-	<bean id="hello"
-		class="it.addvalue.example01.PrintTasklet">
+	<bean id="hello" class="it.addvalue.example01.PrintTasklet">
 		<property name="message" value="Hello" />
 	</bean>
 
-	<bean id="space"
-		class="it.addvalue.example01.PrintTasklet">
+	<bean id="space" class="it.addvalue.example01.PrintTasklet">
 		<property name="message" value=" " />
 	</bean>
 
-	<bean id="world"
-		class="it.addvalue.example01.PrintTasklet">
+	<bean id="world" class="it.addvalue.example01.PrintTasklet">
 		<property name="message" value="World!" />
 	</bean>
 
@@ -40,16 +32,5 @@ http://www.springframework.org/schema/tx/spring-tx-2.1.xsd">
 			<batch:tasklet ref="world" transaction-manager="transactionManager" />
 		</batch:step>
 	</batch:job>
-	
-	<batch:job id="helloWorldJob2" job-repository="jobRepository">
-		<batch:step id="step3" next="step4">
-			<batch:tasklet ref="world" transaction-manager="transactionManager" />
-		</batch:step>
-		<batch:step id="step4" next="step5">
-			<batch:tasklet ref="hello" transaction-manager="transactionManager" />
-		</batch:step>
-		<batch:step id="step5">
-			<batch:tasklet ref="space" transaction-manager="transactionManager" />
-		</batch:step>
-	</batch:job>
+
 </beans>
