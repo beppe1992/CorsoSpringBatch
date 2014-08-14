@@ -8,9 +8,9 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>it.addvalue.esercitazione</groupId>
-  <artifactId>Esercitazione</artifactId>
+  <artifactId>InserimentoAnagrafica</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Esercitazione</name>
+  <name>InserimentoAnagrafica</name>
   <url>http://maven.apache.org</url>
 
 </project>

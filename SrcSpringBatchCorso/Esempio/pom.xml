@@ -179,7 +179,7 @@
 
 	<modules>
 		<module>EsempioBatch</module>
-		<module>Esercitazione</module>
+		<module>InserimentoAnagrafica</module>
 		<module>SpringBatchExamples</module>
     <module>Esercitazione2</module>
   </modules>
