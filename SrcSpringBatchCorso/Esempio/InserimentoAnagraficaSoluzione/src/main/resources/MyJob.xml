@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<batch:job restartable="false" id="inserimentoAnagraficaJob"
+		job-repository="jobRepository">
+
+		<batch:step id="myStep0" next="myStep1">
+			<batch:tasklet ref="countAnagraficaTasklet"
+				transaction-manager="transactionManagerOracle" />
+		</batch:step>
+
+		<batch:step id="myStep1" next="myStep2">
+			<batch:tasklet transaction-manager="transactionManagerOracle">
+				<batch:chunk reader="anagraficaFlatFileItemReader"
+					processor="anagraficaItemProcessor" writer="anagraficaJdbcBatchItemWriter"
+					commit-interval="100">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="myStep2">
+			<batch:tasklet ref="countAnagraficaTasklet"
+				transaction-manager="transactionManagerOracle" />
+		</batch:step>
+
+	</batch:job>
+
+	<!-- TASKLET -->
+	<bean id="countAnagraficaTasklet"
+		class="it.addvalue.esercitazione.tasklet.CountAnagraficaTasklet">
+		<property name="dao" ref="anagraficaDao" />
+	</bean>
+
+	<bean id="anagraficaDao" class="it.addvalue.esercitazione.dao.AnagraficaDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- READER -->
+
+	<bean id="anagraficaFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="resource" value="${FILE.INPUT}" />
+		<property name="linesToSkip" value="1" />
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="delimiter" value=";" />
+						<property name="names" value="codiceFiscale,nome,cognome" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean
+						class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="prototypeBeanName" value="anagraficaPrototype" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="anagraficaPrototype" class="it.addvalue.esercitazione.dto.Anagrafica"
+		scope="prototype" />
+
+	<!-- PROCESSOR -->
+	<bean id="anagraficaItemProcessor" class="it.addvalue.esercitazione.processor.AnagraficaItemProcessor" />
+
+	<!-- WRITER -->
+	<bean id="anagraficaJdbcBatchItemWriter"
+		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+		<property name="dataSource" ref="dataSource" />
+		<property name="assertUpdates" value="true" />
+		<property name="sql">
+			<value>
+            <![CDATA[        
+            	INSERT INTO ANAGRAFICA(NOME,COGNOME,CODICE_FISCALE) 
+			values (:nome,:cognome,:codiceFiscale)
+            ]]>
+			</value>
+		</property>
+		<property name="itemSqlParameterSourceProvider">
+			<bean
+				class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+		</property>
+	</bean>
+
+</beans>

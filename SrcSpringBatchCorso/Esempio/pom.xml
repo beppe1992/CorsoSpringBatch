@@ -182,5 +182,6 @@
 		<module>InserimentoAnagrafica</module>
 		<module>SpringBatchExamples</module>
     <module>Esercitazione2</module>
+    <module>InserimentoAnagraficaSoluzione</module>
   </modules>
 </project>
