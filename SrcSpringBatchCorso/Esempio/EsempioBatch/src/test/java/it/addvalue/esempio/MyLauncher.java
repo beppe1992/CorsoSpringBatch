@@ -12,7 +12,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.arca.danni.utils.springbatch.integrationtest.BaseIntegrationTest;
 
 /**
  * Test d'integrazione dell'intero job in Ram

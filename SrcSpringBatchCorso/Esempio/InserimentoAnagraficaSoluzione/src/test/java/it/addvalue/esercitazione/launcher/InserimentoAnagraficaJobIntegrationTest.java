@@ -1,5 +1,6 @@
 package it.addvalue.esercitazione.launcher;
 
+import it.addvalue.esercitazione.BaseIntegrationTest;
 import it.addvalue.esercitazione.dto.Anagrafica;
 
 import java.util.List;
@@ -18,8 +19,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.arca.danni.utils.springbatch.integrationtest.BaseIntegrationTest;
 
 /**
  * Luancher della catena
@@ -79,7 +78,7 @@ public class InserimentoAnagraficaJobIntegrationTest extends
 		printAnagrafica(anagraficheInTabella);
 
 	}
-	
+
 	private List<Anagrafica> selectAllFromAnagrafica() {
 		return jdbcTemplate.query(
 				"SELECT * FROM ANAGRAFICA ORDER BY CODICE_FISCALE ASC",

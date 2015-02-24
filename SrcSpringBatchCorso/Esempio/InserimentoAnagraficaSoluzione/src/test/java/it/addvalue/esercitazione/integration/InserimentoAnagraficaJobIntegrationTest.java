@@ -1,5 +1,6 @@
 package it.addvalue.esercitazione.integration;
 
+import it.addvalue.esercitazione.BaseIntegrationTest;
 import it.addvalue.esercitazione.dto.Anagrafica;
 
 import java.util.List;
@@ -15,12 +16,8 @@ import org.springframework.batch.core.ExitStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.arca.danni.utils.springbatch.integrationtest.BaseIntegrationTest;
 
 /**
  * Test d'integrazione dell'intero job in Ram
@@ -28,7 +25,7 @@ import com.arca.danni.utils.springbatch.integrationtest.BaseIntegrationTest;
  * @author Nicol&oacute; Tacconi - addvalue
  */
 @ContextConfiguration(locations = { "classpath:InserimentoAnagraficaJobTest.xml" })
-//@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+// @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class InserimentoAnagraficaJobIntegrationTest extends
 		BaseIntegrationTest {
