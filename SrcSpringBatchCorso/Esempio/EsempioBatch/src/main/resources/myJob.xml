@@ -45,7 +45,7 @@
 		<property name="scope" value="prototype" />
 	</bean>
 
-	<bean id="myListener" class="com.arca.danni.utils.springbatch.JobReportListenerTable" />
+	<bean id="myListener" class="it.addvalue.esempio.reportlistener.JobReportListenerTable" />
 
 	<bean id="myStepListener" class="it.addvalue.esempio.MyStepListener" />
 

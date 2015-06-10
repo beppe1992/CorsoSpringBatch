@@ -153,17 +153,6 @@
 
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>arca-release</id>
-			<url>http://ga-subsvn:8083/nexus/content/repositories/release/</url>
-		</repository>
-		<repository>
-			<id>arca-snapshot</id>
-			<url>http://ga-subsvn:8083/nexus/content/repositories/snapshot/</url>
-		</repository>
-	</repositories>
-
 	<modules>
 		<module>EsempioBatch</module>
 		<module>InserimentoAnagrafica</module>
