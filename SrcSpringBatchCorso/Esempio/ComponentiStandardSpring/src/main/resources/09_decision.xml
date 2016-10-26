@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+
+	<batch:job id="decisionJob" job-repository="jobRepository"
+		restartable="false">
+
+		<batch:step id="step1">
+			<batch:tasklet transaction-manager="transactionManagerOracle">
+				<batch:chunk reader="readerDelJob" writer="writerDelJob"
+					commit-interval="100" />
+			</batch:tasklet>
+			<batch:next on="INVIA_MAIL" to="inviaMailReport" />
+			<batch:end on="COMPLETED" />
+			<batch:fail on="*" />
+			<batch:listeners>
+				<batch:listener ref="stepListenerDecision" />
+			</batch:listeners>
+		</batch:step>
+
+		<batch:step id="inviaMailReport">
+			<batch:tasklet transaction-manager="transactionManagerOracle"
+				ref="inviaMailTasklet" />
+			<batch:fail on="COMPLETED" exit-code="INVIA_MAIL" />
+			<batch:fail on="*" />
+		</batch:step>
+
+	</batch:job>
+
+	<bean
+		class="org.springframework.batch.core.launch.support.SimpleJvmExitCodeMapper">
+		<property name="mapping">
+			<util:map>
+				<entry key="INVIA_MAIL" value="99" />
+			</util:map>
+		</property>
+	</bean>
+
+	<bean id="stepListenerDecision" class="it.addvalue.esempio.listener.StepListenerDecision" />
+
+
+	<bean id="inviaMailTasklet" class="com.arca.ged.tasklet.InvioMailTasklet">
+
+	</bean>
+
+
+</beans>
