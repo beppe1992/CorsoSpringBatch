@@ -15,7 +15,7 @@
 		<property name="resource" value="classpath:FileOut.csv" />
 		<property name="lineAggregator">
 			<bean
-				class="com.arca.stampebatch.sostituzionipostel.file.aggregator.FileSmsLineAggregator" />
+				class="it.addvalue.esempio.fileaggregator.MyLineAggregator" />
 		</property>
 		<property name="encoding" value="ISO-8859-1"></property>
 	</bean>

@@ -14,11 +14,10 @@
 	<bean class="org.springframework.batch.item.database.JdbcBatchItemWriter"
 		id="itemWriter">
 		<property name="dataSource" ref="dataSource" />
-		<property name="sql"
-			value="INSERT INTO TABELLA (NOME,ETA) VALUES (?,?)" />
+		<property name="sql" value="INSERT INTO TABELLA (NOME,ETA) VALUES (?,?)" />
 		<property name="itemPreparedStatementSetter">
 			<bean
-				class=""/>
+				class="it.addvalue.esempio.preparedstatement.MyPreparedStatementSetter" />
 		</property>
 	</bean>
 
