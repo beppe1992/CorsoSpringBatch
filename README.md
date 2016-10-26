@@ -15,7 +15,8 @@ Il job ha inoltre un listener che scrive a video un riepilogo dell'esecuzione<br
 ## ComponentiStandardSpring
 Questo esempio contiene alcuni componenti base forniti da Spring<br>
 
-1. jdbcTemplate
+1. jdbcTemplate<br>
+2. propertyPlaceholder<br>
 
 ## InserimentoAnagrafica
 Questo progetto contiene la configurazione base da consegnare ai partecipanti del corso per fare l'esercitazione descritta su GoogleDrive.
