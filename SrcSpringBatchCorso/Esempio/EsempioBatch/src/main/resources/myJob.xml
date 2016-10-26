@@ -23,6 +23,7 @@
 					writer="myWriter" commit-interval="4">
 					<batch:listeners>
 						<batch:listener ref="myStepListener" />
+						<batch:listener ref="myChunkListener" />
 					</batch:listeners>
 				</batch:chunk>
 			</batch:tasklet>
@@ -39,10 +40,13 @@
 	</batch:job>
 
 
-	<bean id="myListener"
-		class="it.addvalue.esempio.reportlistener.JobReportListenerTable" />
+	<bean id="myListener" class="it.addvalue.esempio.JobListener" />
 
 	<bean id="myStepListener" class="it.addvalue.esempio.MyStepListener" />
+
+
+	<bean id="myChunkListener" class="it.addvalue.esempio.MyChunkListener" />
+
 
 	<bean id="myReader" class="it.addvalue.esempio.MyItemReader">
 	</bean>
