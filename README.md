@@ -12,6 +12,11 @@ Lo step ha inoltre uno StepListener che si occupa di far vedere come funzionano 
 
 Il job ha inoltre un listener che scrive a video un riepilogo dell'esecuzione<br>
 
+## ComponentiStandardSpring
+Questo esempio contiene alcuni componenti base forniti da Spring<br>
+
+1. jdbcTemplate
+
 ## InserimentoAnagrafica
 Questo progetto contiene la configurazione base da consegnare ai partecipanti del corso per fare l'esercitazione descritta su GoogleDrive.
 
