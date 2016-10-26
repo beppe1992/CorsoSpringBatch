@@ -3,4 +3,5 @@
 //com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/03_flatFileItemReader.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
 //com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/04_jdbcCursorItemReader.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
 //com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/05_flatFileItemWriter.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
+//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/06_jdbcItemWriter.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
 eclipse.preferences.version=1
