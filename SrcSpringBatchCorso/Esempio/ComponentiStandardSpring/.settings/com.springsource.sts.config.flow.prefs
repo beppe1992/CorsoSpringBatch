@@ -1,9 +1,0 @@
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/01_jdbcTemplate.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/02_propertyPlaceOlder.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/03_flatFileItemReader.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/04_jdbcCursorItemReader.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/05_flatFileItemWriter.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/06_jdbcItemWriter.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/07_compositeElements.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
-//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/ComponentiStandardSpring/src/main/resources/08_skipAndRetry.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph>\r\n<element clazz\="JobModelElement" type\="job">\r\n<structure end\="1771" endstart\="1759" start\="992" startend\="1034"/>\r\n<bounds height\="118" width\="91" x\="15" y\="17"/>\r\n</element>\r\n</graph>
-eclipse.preferences.version=1
