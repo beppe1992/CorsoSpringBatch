@@ -11,28 +11,13 @@
 
 
 
-	<bean id="readerCsv" class="org.springframework.batch.item.file.FlatFileItemReader">
-		<property name="strict" value="false" />
-		<property name="encoding" value="ISO-8859-1" />
-		<property name="resource" value="classpath:FileInputEsempio.csv" />
-		<property name="linesToSkip" value="1" />
-		<property name="lineMapper">
-			<bean class="it.addvalue.esempio.linemapper.FileInputEsempioLineMapperCsv" />
-		</property>
-	</bean>
-
-	<bean id="readerFixed" class="org.springframework.batch.item.file.FlatFileItemReader">
-		<property name="strict" value="false" />
-		<property name="encoding" value="ISO-8859-1" />
-		<property name="resource" value="classpath:FileInputEsempio.fixed" />
-		<property name="lineMapper">
-			<bean
-				class="it.addvalue.esempio.linemapper.FileInputEsempioLineMapperFixedFile" />
-		</property>
-		<property name="recordSeparatorPolicy">
-			<bean
-				class="com.arca.stampebatch.estrattorechiavi.file.separator.PostelLineNumberSeparatorPolicy">
-				<property name="lineNumberSeparator" value="5" />
+	<bean id="cursorReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql" value="SELECT NOME,ETA FROM TABELLA" />
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+				<property name="mappedClass" value="it.addvalue.esempio.generics.InputObject" />
 			</bean>
 		</property>
 	</bean>
