@@ -11,28 +11,19 @@ import org.springframework.batch.item.UnexpectedInputException;
 public class MyItemReader implements ItemReader<MyObject>,
 		ItemStreamReader<MyObject> {
 
-	private int i = 0;
-
-	private TestScope scope;
-
-	public void setScope(TestScope scope) {
-		this.scope = scope;
-	}
+	private int i = 1;
 
 	public MyObject read() throws Exception, UnexpectedInputException,
 			ParseException, NonTransientResourceException {
 		System.out.println("");
 		System.out.println("****************************");
 		System.out.println("READER");
-		System.out.println("lo scope in entrata è :" + scope.getScope());
-		System.out.println("lo scope lo setto a pippo");
-		scope.setScope("pippo");
 		System.out.println("****************************");
 		System.out.println("");
 
 		MyObject object = new MyObject();
 
-		if (i > 5) {
+		if (i > 6) {
 			return null;
 		}
 

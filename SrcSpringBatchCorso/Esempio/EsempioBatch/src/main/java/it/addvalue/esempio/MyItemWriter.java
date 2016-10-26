@@ -10,7 +10,7 @@ import org.springframework.batch.item.ItemWriter;
 public class MyItemWriter implements ItemWriter<MyObject>,
 		ItemStreamWriter<MyObject> {
 
-	int i = 0;
+	int i = 1;
 
 	public void write(List<? extends MyObject> items) throws Exception {
 

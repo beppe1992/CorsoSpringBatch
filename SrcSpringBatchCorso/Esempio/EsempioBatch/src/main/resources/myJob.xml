@@ -8,21 +8,18 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<import resource="commonsSpringBatch.xml" />
-	<import resource="datasourceContextDerbyHsql.xml" />
 
-
-	<batch:job restartable="false" id="JSTPAGScadPolSostituiteAA"
+	<batch:job restartable="false" id="EsempioBatch"
 		job-repository="jobRepository">
 
 		<batch:step id="myStep0" next="myStep1">
 			<batch:tasklet ref="myTaskletAdapter"
-				transaction-manager="transactionManagerOracle" />
+				transaction-manager="transactionManager" />
 		</batch:step>
 
 		<batch:step id="myStep1" next="myStep2">
-			<batch:tasklet transaction-manager="transactionManagerOracle">
-				<batch:chunk reader="myReader" processor="myProcaessor"
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="myReader" processor="myProcessor"
 					writer="myWriter" commit-interval="4">
 					<batch:listeners>
 						<batch:listener ref="myStepListener" />
@@ -32,7 +29,7 @@
 		</batch:step>
 
 		<batch:step id="myStep2">
-			<batch:tasklet ref="myTasklet" transaction-manager="transactionManagerOracle" />
+			<batch:tasklet ref="myTasklet" transaction-manager="transactionManager" />
 		</batch:step>
 
 		<batch:listeners>
@@ -41,20 +38,16 @@
 
 	</batch:job>
 
-	<bean id="beanScope" class="it.addvalue.esempio.TestScope" scope="prototype">
-		<property name="scope" value="prototype" />
-	</bean>
 
-	<bean id="myListener" class="it.addvalue.esempio.reportlistener.JobReportListenerTable" />
+	<bean id="myListener"
+		class="it.addvalue.esempio.reportlistener.JobReportListenerTable" />
 
 	<bean id="myStepListener" class="it.addvalue.esempio.MyStepListener" />
 
 	<bean id="myReader" class="it.addvalue.esempio.MyItemReader">
-		<property name="scope" ref="beanScope" />
 	</bean>
 
-	<bean id="myProcaessor" class="it.addvalue.esempio.MyItemProcessor">
-		<property name="scope" ref="beanScope" />
+	<bean id="myProcessor" class="it.addvalue.esempio.MyItemProcessor">
 	</bean>
 
 	<bean id="myWriter" class="it.addvalue.esempio.MyItemWriter" />
@@ -70,7 +63,5 @@
 
 
 	<bean id="myDao" class="it.addvalue.esempio.MyDao" />
-
-
 
 </beans>

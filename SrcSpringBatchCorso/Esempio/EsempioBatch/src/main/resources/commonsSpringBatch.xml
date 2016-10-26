@@ -10,10 +10,10 @@
 
 
 	<!-- DEFINIZIONE BEAN COMUNI PER SPRING BATCH -->
-	
+
 	<bean id="jobRepository"
 		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
-		<property name="transactionManager" ref="transactionManagerSpringBatch" />
+		<property name="transactionManager" ref="transactionManager" />
 		<property name="isolationLevelForCreate" value="ISOLATION_READ_COMMITTED" />
 	</bean>
 
@@ -25,54 +25,11 @@
 
 
 	<!-- TRANSACTION MANAGER -->
-	
-	<bean id="transactionManagerSpringBatch"
+
+	<bean id="transactionManager"
 		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager">
 	</bean>
 
-	<bean id="transactionManagerOracle"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-		scope="singleton">
-		<property name="dataSource" ref="dataSourceOracle" />
-	</bean>
-	
-<!-- 	<bean id="transactionManagerDb2" -->
-<!-- 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager" -->
-<!-- 		scope="singleton"> -->
-<!-- 		<property name="dataSource" ref="dataSourceDb2" /> -->
-<!-- 	</bean> -->
-	
-	<!-- Lettura file properties -->
 
-	<bean id="propertyPlaceholder"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
-		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
-		<property name="ignoreResourceNotFound" value="false" />
-		<property name="locations">
-			<list>
-				<value>classpath:StampeBatchTest.properties</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="encryptProperties" class="cryptoProperties.EncryptPropertiesFactoryBean">
-		<property name="ignoreResourceNotFound" value="true" />
-		<property name="loadOnlyFirstAvaliableResource" value="true" />
-		<property name="locations">
-			<list>
-				<value>classpath:StampeBatchTest.properties</value>
-			</list>
-		</property>
-	</bean>
-
-
-	<bean id="encryptPropertiesHolder" class="cryptoProperties.EncryptPropertiesHolder">
-		<constructor-arg>
-			<ref bean="encryptProperties" />
-		</constructor-arg>
-	</bean>
-
-	<bean id="encryptPropertiesService" class="cryptoProperties.EncryptPropertiesService" />
 
 </beans>

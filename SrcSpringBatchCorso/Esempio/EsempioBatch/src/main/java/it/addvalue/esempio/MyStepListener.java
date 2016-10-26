@@ -8,13 +8,13 @@ public class MyStepListener implements StepExecutionListener {
 
 	public void beforeStep(StepExecution stepExecution) {
 		System.out.println("");
-		System.out.println("step listener");
+		System.out.println("step listener - before step");
 
 	}
 
 	public ExitStatus afterStep(StepExecution stepExecution) {
 		System.out.println("");
-		System.out.println("after lister");
+		System.out.println("step listener - after step");
 		System.out.println("status " + stepExecution.getExitStatus());
 		return stepExecution.getExitStatus();
 	}
