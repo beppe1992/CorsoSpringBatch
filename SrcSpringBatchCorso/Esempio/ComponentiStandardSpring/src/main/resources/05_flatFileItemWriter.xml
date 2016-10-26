@@ -11,10 +11,8 @@
 
 
 
-	<bean id="itemWriterSms" class="org.springframework.batch.item.file.FlatFileItemWriter"
-		scope="step">
-		<property name="resource"
-			value="classpath:FileOut.csv" />
+	<bean id="itemWriterSms" class="org.springframework.batch.item.file.FlatFileItemWriter">
+		<property name="resource" value="classpath:FileOut.csv" />
 		<property name="lineAggregator">
 			<bean
 				class="com.arca.stampebatch.sostituzionipostel.file.aggregator.FileSmsLineAggregator" />

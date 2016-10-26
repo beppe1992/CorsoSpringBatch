@@ -20,7 +20,8 @@ Questo esempio contiene alcuni componenti base forniti da Spring<br>
 3. FlatFileItemReader + LineMapper<br>
 4. JdbcCursorItemReader + RowMapper<br>
 5. FlatFileItemWriter + LineAggregator<br>
-6. JdbcItemWriter <br>
+6. JdbcItemWriter<br>
+7. CompositeItemProcessor/Writer/MultiResourceItemReader<br>
 
 ## InserimentoAnagrafica
 Questo progetto contiene la configurazione base da consegnare ai partecipanti del corso per fare l'esercitazione descritta su GoogleDrive.
