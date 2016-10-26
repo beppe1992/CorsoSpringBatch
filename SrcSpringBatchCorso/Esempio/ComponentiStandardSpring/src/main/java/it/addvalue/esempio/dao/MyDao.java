@@ -11,17 +11,12 @@ import org.springframework.stereotype.Service;
 
 public class MyDao extends JdbcDaoSupport {
 
-	public List<String> recuperaTuttiLibri() {
-		return null;
+	public String recuperaUnRecord(String input) {
+		return super.getJdbcTemplate().queryForObject(
+				"SELECT * FROM TABELLA WHERE NOME = ?", String.class, input);
 	}
 
 	public void inserisciSuDb(String libro) {
-
+		super.getJdbcTemplate().update("INSERT INTO TABELLA VALUES(?)", libro);
 	}
-
-	@Autowired
-	public MyDao(DataSource dataSource) {
-		super.setDataSource(dataSource);
-	}
-
 }
