@@ -29,12 +29,6 @@
 			<bean
 				class="it.addvalue.esempio.linemapper.FileInputEsempioLineMapperFixedFile" />
 		</property>
-		<property name="recordSeparatorPolicy">
-			<bean
-				class="com.arca.stampebatch.estrattorechiavi.file.separator.PostelLineNumberSeparatorPolicy">
-				<property name="lineNumberSeparator" value="5" />
-			</bean>
-		</property>
 	</bean>
 
 
