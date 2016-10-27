@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+
+	<batch:job id="jobConSplit" job-repository="jobRepository"
+		restartable="false">
+
+		<batch:step id="masterStep" next="inviaMailStep">
+			<batch:partition step="stepPartizionato" partitioner="queryPartitioner"
+				handler="partitionHandler">
+			</batch:partition>
+		</batch:step>
+
+		<batch:step id="inviaMailStep">
+			<batch:tasklet ref="inviaMailTasklet"
+				transaction-manager="transactionManager" />
+		</batch:step>
+
+	</batch:job>
+
+
+	<batch:step id="stepPartizionato">
+		<batch:tasklet transaction-manager="transactionManager">
+			<batch:chunk reader="cursorReader" processor="compositeItemProcessor"
+				writer="sampleWriter" commit-interval="50">
+			</batch:chunk>
+		</batch:tasklet>
+	</batch:step>
+
+
+	<bean id="queryPartitioner" class="it.addvalue.esempio.partitioner.DatePartitioner">
+		<property name="dataDa" value="201601" />
+		<property name="dataDa" value="201606" />
+	</bean>
+	
+	<bean id="partitionHandler" scope="step"
+		class="org.springframework.batch.core.partition.support.TaskExecutorPartitionHandler">
+		<property name="taskExecutor" ref="taskExecutor" />
+		<property name="gridSize" value="100" />
+		<property name="step" ref="stepPartizionato" />
+	</bean>
+	
+	<!-- INDICARE A COSA SERVONO ENTRAMBI -->
+	<bean id="taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="8" />
+		<property name="maxPoolSize" value="8" />
+		<property name="waitForTasksToCompleteOnShutdown" value="true" />
+	</bean>
+	<bean id="taskExecutorAsync" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
+
+	<bean id="cursorReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value><![CDATA[SELECT NOME,ETA FROM TABELLA WHERE MESE = #{stepExecutionContext['FILTER']}]]></value>
+		</property>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+				<property name="mappedClass" value="it.addvalue.esempio.generics.InputObject" />
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean class="org.springframework.batch.item.support.CompositeItemProcessor"
+		id="compositeItemProcessor">
+		<property name="delegates">
+			<list>
+				<bean
+					class="org.springframework.batch.item.support.PassThroughItemProcessor">
+				</bean>
+				<bean
+					class="org.springframework.batch.item.support.PassThroughItemProcessor">
+				</bean>
+				<bean
+					class="org.springframework.batch.item.support.PassThroughItemProcessor">
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		id="sampleWriter">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql" value="INSERT INTO TABELLA (NOME,ETA) VALUES (?,?)" />
+		<property name="itemPreparedStatementSetter">
+			<bean
+				class="it.addvalue.esempio.preparedstatement.MyPreparedStatementSetter" />
+		</property>
+	</bean>
+
+	<bean id="inviaMailTasklet" class="it.addvalue.esempio.tasklet.InvioMailTasklet">
+
+	</bean>
+
+</beans>

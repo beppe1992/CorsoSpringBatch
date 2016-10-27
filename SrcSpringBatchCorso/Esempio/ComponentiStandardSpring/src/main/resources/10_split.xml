@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+
+	<batch:job id="jobConSplit" job-repository="jobRepository"
+		restartable="false">
+
+		<batch:split id="primoSplit" next="inviaMailStep"
+			task-executor="sympleAsyncTaskExecutor">
+			<batch:flow>
+				<batch:step id="step1">
+					<batch:tasklet transaction-manager="transactionManager">
+						<batch:chunk reader="readerCsv1" processor="compositeItemProcessor"
+							writer="sampleWriter" commit-interval="50">
+						</batch:chunk>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+			<batch:flow>
+				<batch:step id="step2">
+					<batch:tasklet transaction-manager="transactionManager">
+						<batch:chunk reader="readerCsv2" processor="compositeItemProcessor"
+							writer="sampleWriter" commit-interval="50">
+						</batch:chunk>
+					</batch:tasklet>
+				</batch:step>
+			</batch:flow>
+		</batch:split>
+
+		<batch:step id="inviaMailStep">
+			<batch:tasklet ref="inviaMailTasklet"
+				transaction-manager="transactionManager" />
+		</batch:step>
+
+	</batch:job>
+
+	<bean id="sympleAsyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"
+		p:threadNamePrefix="SplitThread_" />
+
+	<bean id="readerCsv1" class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="strict" value="false" />
+		<property name="encoding" value="ISO-8859-1" />
+		<property name="resource" value="classpath:FileInputEsempio.csv" />
+		<property name="linesToSkip" value="1" />
+		<property name="lineMapper">
+			<bean class="it.addvalue.esempio.linemapper.FileInputEsempioLineMapperCsv" />
+		</property>
+	</bean>
+
+	<bean id="readerCsv2" class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="strict" value="false" />
+		<property name="encoding" value="ISO-8859-1" />
+		<property name="resource" value="classpath:FileInputEsempio.fixed" />
+		<property name="linesToSkip" value="1" />
+		<property name="lineMapper">
+			<bean
+				class="it.addvalue.esempio.linemapper.FileInputEsempioLineMapperFixedFile" />
+		</property>
+	</bean>
+
+	<bean class="org.springframework.batch.item.support.CompositeItemProcessor"
+		id="compositeItemProcessor">
+		<property name="delegates">
+			<list>
+				<bean
+					class="org.springframework.batch.item.support.PassThroughItemProcessor">
+				</bean>
+				<bean
+					class="org.springframework.batch.item.support.PassThroughItemProcessor">
+				</bean>
+				<bean
+					class="org.springframework.batch.item.support.PassThroughItemProcessor">
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		id="sampleWriter">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql" value="INSERT INTO TABELLA (NOME,ETA) VALUES (?,?)" />
+		<property name="itemPreparedStatementSetter">
+			<bean
+				class="it.addvalue.esempio.preparedstatement.MyPreparedStatementSetter" />
+		</property>
+	</bean>
+
+	<bean id="inviaMailTasklet" class="it.addvalue.esempio.tasklet.InvioMailTasklet">
+
+	</bean>
+
+</beans>

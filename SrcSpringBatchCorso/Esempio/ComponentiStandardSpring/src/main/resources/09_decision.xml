@@ -49,7 +49,7 @@
 	<bean id="stepListenerDecision" class="it.addvalue.esempio.listener.StepListenerDecision" />
 
 
-	<bean id="inviaMailTasklet" class="com.arca.ged.tasklet.InvioMailTasklet">
+	<bean id="inviaMailTasklet" class="it.addvalue.esempio.tasklet.InvioMailTasklet">
 
 	</bean>
 
