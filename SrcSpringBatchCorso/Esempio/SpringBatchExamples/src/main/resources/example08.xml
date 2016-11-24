@@ -20,42 +20,29 @@
 		</batch:step>
 	</batch:job>
 
-	<bean id="reader1"
-		class="org.springframework.batch.item.file.MultiResourceItemReader">
-		<property name="resources" value="classpath:file/Input.*" />
-		<property name="strict" value="true"></property>
-		<property name="delegate">
-			<bean id="reader1"
-				class="org.springframework.batch.item.file.FlatFileItemReader">
-				<property name="lineMapper" ref="stlm" />
-				<property name="linesToSkip" value="1"></property>
-				<property name="encoding" value="UTF-8"></property>
-				<property name="resource" value="classpath:file/Input.txt" />
+
+	<bean class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		id="reader1">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value><![CDATA[
+				SELECT * FROM TABLE_TO_READ
+			]]></value>
+		</property>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+				<property name="mappedClass" value="it.addvalue.example08.TableToRead" />
 			</bean>
 		</property>
 	</bean>
 
-
-
-	<bean id="stlm" class="it.addvalue.example02.SimpleTestLineMapper" />
-
-	<bean id="writer1"
-		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
-		<property name="dataSource" ref="dataSource" />
-		<property name="sql">
-			<value>
-            <![CDATA[
-            	insert into FILE_READED(NAME,VAL,SURNAME)
-			values (:name, :val, :surname)
-            ]]>
-			</value>
-		</property>
-		<property name="itemSqlParameterSourceProvider">
-			<bean
-				class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
-		</property>
+	<bean id="writer1" class="org.springframework.batch.item.file.FlatFileItemWriter">
+		<property name="resource" value="file:C:/txtGen/out/outFile.csv" />
+		<property name="lineAggregator" ref="stla" />
+		<property name="encoding" value="UTF-8"></property>
 	</bean>
 
+	<bean id="stla" class="it.addvalue.example08.SimpleTestLineAggregator" />
 
 	<jdbc:embedded-database id="dataSource">
 		<jdbc:script location="classpath:/sql/prepareSpringTablesInRamDB.sql" />

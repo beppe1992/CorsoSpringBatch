@@ -9,6 +9,18 @@
 
 	<import resource="job.xml" />
 
+	<batch:job id="helloWorldJob" job-repository="jobRepository">
+		<batch:step id="step0" next="step1">
+			<batch:tasklet ref="hello" transaction-manager="transactionManager" />
+		</batch:step>
+		<batch:step id="step1" next="step2">
+			<batch:tasklet ref="space" transaction-manager="transactionManager" />
+		</batch:step>
+		<batch:step id="step2">
+			<batch:tasklet ref="world" transaction-manager="transactionManager" />
+		</batch:step>
+	</batch:job>
+
 	<bean id="hello" class="it.addvalue.example01.PrintTasklet">
 		<property name="message" value="Hello" />
 	</bean>
@@ -21,16 +33,5 @@
 		<property name="message" value="World!" />
 	</bean>
 
-	<batch:job id="helloWorldJob" job-repository="jobRepository">
-		<batch:step id="step0" next="step1">
-			<batch:tasklet ref="hello" transaction-manager="transactionManager" />
-		</batch:step>
-		<batch:step id="step1" next="step2">
-			<batch:tasklet ref="space" transaction-manager="transactionManager" />
-		</batch:step>
-		<batch:step id="step2">
-			<batch:tasklet ref="world" transaction-manager="transactionManager" />
-		</batch:step>
-	</batch:job>
 
 </beans>

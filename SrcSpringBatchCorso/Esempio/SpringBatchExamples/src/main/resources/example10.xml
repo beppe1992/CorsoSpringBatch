@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/p http://www.springframework.org/schema/batch
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+	<import resource="job.xml" />
+
+	<batch:job id="fileProcess" job-repository="jobRepository">
+
+		<batch:step id="Sort_1">
+			<batch:tasklet>
+				<batch:chunk reader="reader1" processor="compositeProcessor"
+					writer="compositeWriter" commit-interval="50">
+				</batch:chunk>
+				<batch:listeners>
+					<batch:listener ref="readListener"></batch:listener>
+					<batch:listener ref="processListener"></batch:listener>
+					<batch:listener ref="chunkListener"></batch:listener>
+				</batch:listeners>
+			</batch:tasklet>
+			<!-- <batch:listeners> <batch:listener ref="stepListener"></batch:listener> 
+				</batch:listeners> -->
+		</batch:step>
+		<!-- <batch:listeners> <batch:listener ref="jobListener"></batch:listener> 
+			</batch:listeners> -->
+	</batch:job>
+
+	<bean id="readListener" class="it.addvalue.example10.ReadListener" />
+	<bean id="processListener" class="it.addvalue.example10.ProcessListener" />
+	<bean id="chunkListener" class="it.addvalue.example10.ChunkListener" />
+
+
+	<bean class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		id="reader1">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value><![CDATA[
+				SELECT * FROM TABLE_TO_READ
+			]]></value>
+		</property>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+				<property name="mappedClass" value="it.addvalue.example10.TableToRead" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="compositeProcessor"
+		class="org.springframework.batch.item.support.CompositeItemProcessor">
+		<property name="delegates">
+			<list>
+				<bean class="it.addvalue.example10.CodiceFiscaleMapper" />
+				<bean class="it.addvalue.example10.RagioneSocialeMapper" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="compositeWriter"
+		class="org.springframework.batch.item.support.CompositeItemWriter">
+		<property name="delegates">
+			<list>
+				<bean id="writer1"
+					class="org.springframework.batch.item.file.FlatFileItemWriter">
+					<property name="resource" value="file:C:/txtGen/out/outFile1.csv" />
+					<property name="lineAggregator" ref="stlaCsv" />
+					<property name="encoding" value="UTF-8"></property>
+				</bean>
+				<bean id="writer2"
+					class="org.springframework.batch.item.file.FlatFileItemWriter">
+					<property name="resource" value="file:C:/txtGen/out/outFile2.fixed" />
+					<property name="lineAggregator" ref="stlaFixed" />
+					<property name="encoding" value="UTF-8"></property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+
+	<bean id="stlaCsv" class="it.addvalue.example10.SimpleCsvLineAggregator" />
+
+	<bean id="stlaFixed" class="it.addvalue.example10.SimpleFixedLineAggregator" />
+
+	<jdbc:embedded-database id="dataSource">
+		<jdbc:script location="classpath:/sql/prepareSpringTablesInRamDB.sql" />
+		<jdbc:script location="classpath:/sql/prepareSampleTableInRamDB.sql" />
+	</jdbc:embedded-database>
+
+
+</beans>

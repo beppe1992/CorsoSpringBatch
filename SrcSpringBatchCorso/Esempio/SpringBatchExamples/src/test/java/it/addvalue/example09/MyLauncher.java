@@ -1,4 +1,4 @@
-package it.addvalue.example02;
+package it.addvalue.example09;
 
 import it.addvalue.BaseIntegrationTest;
 
@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * 
  * @author Nicol&oacute; Tacconi - addvalue
  */
-@ContextConfiguration(locations = { "classpath:example02.xml" })
+@ContextConfiguration(locations = { "classpath:example09.xml" })
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MyLauncher extends BaseIntegrationTest {
@@ -31,7 +31,7 @@ public class MyLauncher extends BaseIntegrationTest {
 	@Test
 	public void run() throws Exception {
 
-		super.init("JobId", "fileConverter");
+		super.init("JobId", "fileProcess");
 		executeJob();
 
 	}

@@ -9,38 +9,51 @@
 
 	<import resource="job.xml" />
 
-	<job id="fileSorter" xmlns="http://www.springframework.org/schema/batch"
-		job-repository="jobRepository">
+	<batch:job id="fileSorter" job-repository="jobRepository">
 
-		<step id="Sort_1">
-			<tasklet ref="sortTasklet1" />
-		</step>
+		<batch:step id="readFileStep" next="SortAndWriteStep">
+			<batch:tasklet>
+				<batch:chunk reader="readerFile" writer="writerInContext"
+					commit-interval="50">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
 
-	</job>
+		<batch:step id="SortAndWriteStep">
+			<batch:tasklet ref="sortTasklet1">
+			</batch:tasklet>
+		</batch:step>
 
-	<bean id="sortTasklet1"
-		class="it.addvalue.example03.SortFileTasklet">
-		<property name="reader" ref="reader1" />
-		<property name="writer" ref="writer1" />
-	</bean>
+	</batch:job>
 
-	<bean id="reader1" class="org.springframework.batch.item.file.FlatFileItemReader"
-		scope="step">
+
+
+	<bean id="readerFile" class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="linesToSkip" value="1"></property>
 		<property name="lineMapper" ref="stlm" />
 		<property name="resource" value="classpath:file/Input.txt" />
 	</bean>
 
-	<bean id="writer1" class="org.springframework.batch.item.file.FlatFileItemWriter"
-		scope="step">
+	<bean id="stla" class="it.addvalue.example03.SimpleTestLineAggregator" />
+
+	<bean id="writerInContext" class="it.addvalue.example03.ContextListWriter">
+		<property name="listaInContesto" ref="listToSort"></property>
+	</bean>
+
+	<bean id="listToSort" class="java.util.ArrayList"></bean>
+
+
+	<bean id="sortTasklet1" class="it.addvalue.example03.SortFileTasklet">
+		<property name="listToSort" ref="listToSort" />
+		<property name="writer" ref="writer1" />
+	</bean>
+
+	<bean id="writer1" class="org.springframework.batch.item.file.FlatFileItemWriter">
 		<property name="resource" value="file:C:/txtGen/out/outFileSort.txt" />
 		<property name="lineAggregator" ref="stla" />
 	</bean>
 
-	<bean id="stla"
-		class="it.addvalue.example03.SimpleTestLineAggregator" />
-
-	<bean id="stlm"
-		class="it.addvalue.example03.SimpleTestLineMapper" />
+	<bean id="stlm" class="it.addvalue.example03.SimpleTestLineMapper" />
 
 
 </beans>

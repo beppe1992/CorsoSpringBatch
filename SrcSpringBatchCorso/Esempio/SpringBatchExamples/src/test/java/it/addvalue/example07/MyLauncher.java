@@ -31,7 +31,7 @@ public class MyLauncher extends BaseIntegrationTest {
 	@Test
 	public void run() throws Exception {
 
-		super.init("JobId", "retryJob");
+		super.init("JobId", "fileProcess");
 		executeJob();
 
 	}
