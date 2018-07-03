@@ -10,14 +10,14 @@ public class MyChunkListener implements ChunkListener {
 	@Override
 	public void afterChunk() {
 		System.out.println("");
-		System.out.println("chunk listener - before chunk");
+		System.out.println("chunk listener - after chunk");
 
 	}
 
 	@Override
 	public void beforeChunk() {
 		System.out.println("");
-		System.out.println("chunk listener - after chunk");
+		System.out.println("chunk listener - before chunk");
 
 	}
 }
