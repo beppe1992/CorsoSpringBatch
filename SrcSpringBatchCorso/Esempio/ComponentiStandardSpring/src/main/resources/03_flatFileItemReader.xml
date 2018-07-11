@@ -54,7 +54,7 @@
 		</property>
 	</bean>
 
-	<bean id="readerFixed" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<bean id="readerFixedCustomMapper" class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="strict" value="false" />
 		<property name="encoding" value="ISO-8859-1" />
 		<property name="resource" value="classpath:FileInputEsempio.fixed" />
@@ -63,6 +63,40 @@
 				class="it.addvalue.esempio.linemapper.FileInputEsempioLineMapperFixedFile" />
 		</property>
 	</bean>
+	
+	<bean id="readerFixed" class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="strict" value="false" />
+		<property name="encoding" value="ISO-8859-1" />
+		<property name="resource" value="classpath:FileInputEsempio.fixed" />
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">
+						<property name="strict" value="false" />
+						<property name="names"
+							value="banca,descBanca,subagente,prodotto,descProdotto,ndgContraente,dtcreaProp,convenzione,numeroProp,decorrenza,stato,nominativo,via,cap,localita,provincia,note,dtLavProp,dtAnnProp,dtLettera,dtSollecito,tipoLettera" />
+						<property name="columns"
+							value="1-4, 4-21, 21-30, 30-34, 34-50,
+								50-62, 62-74, 74-84, 84-94, 94-114, 114-129, 129-161, 161-179,
+								179-206, 206-233, 233-240, 240-243" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="prototypeBeanName" value="repTcmDtoPrototype" />
+						<property name="customEditors">
+							<map>
+								<entry key="java.util.Date">
+									<ref bean="dateEditor" />
+								</entry>
+							</map>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
 
 
 </beans>
