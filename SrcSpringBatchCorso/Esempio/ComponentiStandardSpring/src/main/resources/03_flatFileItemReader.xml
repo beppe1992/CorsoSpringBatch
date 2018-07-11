@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-
+<!-- QUESTO READER NON E' THREAD SAFE!!!! --> 
 
 	<bean id="readerCsvCustomMapper" class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="strict" value="false" />
