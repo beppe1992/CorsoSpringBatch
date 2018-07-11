@@ -1,0 +1,16 @@
+<bean id="validatorPolizzeItemProcessor" class="org.springframework.batch.item.validator.ValidatingItemProcessor">
+		<property name="filter" value="true" />
+		<property name="validator">
+			<bean class="org.springframework.batch.item.validator.SpringValidator">
+				<property name="validator">
+					<bean class="org.springmodules.validation.valang.ValangValidator">
+						<property name="valang">
+							<value>
+								<![CDATA[ { nPropostaRecuperata : ? IS NOT NULL : 'La proposta risulta a null'}]]>
+							</value>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
