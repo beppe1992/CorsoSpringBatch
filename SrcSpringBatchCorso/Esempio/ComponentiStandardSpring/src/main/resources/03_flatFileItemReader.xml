@@ -11,13 +11,46 @@
 
 
 
-	<bean id="readerCsv" class="org.springframework.batch.item.file.FlatFileItemReader">
+	<bean id="readerCsvCustomMapper" class="org.springframework.batch.item.file.FlatFileItemReader">
 		<property name="strict" value="false" />
 		<property name="encoding" value="ISO-8859-1" />
 		<property name="resource" value="classpath:FileInputEsempio.csv" />
 		<property name="linesToSkip" value="1" />
 		<property name="lineMapper">
 			<bean class="it.addvalue.esempio.linemapper.FileInputEsempioLineMapperCsv" />
+		</property>
+	</bean>
+	
+	<bean id="readerCsv" class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="strict" value="false" />
+		<property name="encoding" value="ISO-8859-1" />
+		<property name="resource" value="classpath:FileInputEsempio.csv" />
+		<property name="linesToSkip" value="1" />
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="delimiter" value=";" />
+						<property name="strict" value="false" />
+						<!-- uso un carattere impossibile perche' voglio che il doppio apice possa essere usato nel testo dei campi da leggere -->
+						<property name="quoteCharacter" value="Þ" />
+						<property name="names"
+							value="banca,descBanca,subagente,prodotto,descProdotto,ndgContraente,dtcreaProp,convenzione,numeroProp,decorrenza,stato,nominativo,via,cap,localita,provincia,note,dtLavProp,dtAnnProp,dtLettera,dtSollecito,tipoLettera" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="prototypeBeanName" value="repTcmDtoPrototype" />
+						<property name="customEditors">
+							<map>
+								<entry key="java.util.Date">
+									<ref bean="dateEditor" />
+								</entry>
+							</map>
+						</property>
+					</bean>
+				</property>
+			</bean>
 		</property>
 	</bean>
 
