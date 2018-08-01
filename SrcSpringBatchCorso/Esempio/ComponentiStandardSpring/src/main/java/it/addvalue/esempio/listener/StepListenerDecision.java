@@ -20,7 +20,7 @@ public class StepListenerDecision implements StepExecutionListener {
 	}
 
 	public ExitStatus afterStep(StepExecution stepExecution) {
-		if (stepExecution.getExitStatus().equals(ExitStatus.COMPLETED)) {
+		if (!stepExecution.getExitStatus().equals(ExitStatus.COMPLETED)) {
 
 			return new ExitStatus("INVIA_MAIL",
 					"Step Completato, invio la mail");
