@@ -57,7 +57,7 @@
 					<property name="encoding" value="ISO-8859-1"></property>
 				</bean>
 				<bean class="org.springframework.batch.item.file.FlatFileItemWriter">
-					<property name="resource" value="classpath:FileOut2.csv" />
+					<property name="resource" value="classpath:FileOut3.csv" />
 					<property name="lineAggregator">
 						<bean
 							class="it.addvalue.esempio.fileaggregator.MyLineAggregator" />
