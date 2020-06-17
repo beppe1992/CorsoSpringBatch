@@ -3,9 +3,6 @@ package it.addvalue.esempio.listener;
 import it.addvalue.esempio.generics.InputObject;
 
 import org.springframework.batch.core.listener.SkipListenerSupport;
-import org.springframework.batch.retry.RetryCallback;
-import org.springframework.batch.retry.RetryContext;
-import org.springframework.batch.retry.listener.RetryListenerSupport;
 
 public class SkipListener implements
 		org.springframework.batch.core.SkipListener<InputObject, InputObject> {

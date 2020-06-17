@@ -122,8 +122,8 @@ public class MyStep0Test {
 		jdbcTemplate.update("DELETE FROM ANAGRAFICA");
 	}
 
-	private void checkNumberOfRecordInAnagraficaTable(int numeroDiRecord) {
+	private void checkNumberOfRecordInAnagraficaTable(Integer numeroDiRecord) {
 		Assert.assertEquals(numeroDiRecord,
-				jdbcTemplate.queryForInt("SELECT COUNT(*) FROM ANAGRAFICA"));
+				jdbcTemplate.queryForObject("SELECT COUNT(*) FROM ANAGRAFICA",Integer.class));
 	}
 }

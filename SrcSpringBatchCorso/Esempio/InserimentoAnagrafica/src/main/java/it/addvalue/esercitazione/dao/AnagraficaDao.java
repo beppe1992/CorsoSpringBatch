@@ -16,8 +16,8 @@ public class AnagraficaDao implements IAnagraficaDao {
 
 	public void printCountRecordInTabella() {
 		System.out.println("Il numero di record presenti in tabella e' "
-				+ getJdbcTemplate().queryForInt(
-						"SELECT COUNT(*) FROM ANAGRAFICA"));
+				+ getJdbcTemplate().queryForObject(
+						"SELECT COUNT(*) FROM ANAGRAFICA",Integer.class));
 	}
 
 	// METODO DA UTILIZZARE PER SETTARE IL DATASOURCE

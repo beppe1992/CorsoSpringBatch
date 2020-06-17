@@ -13,10 +13,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<JUnit.version>4.10</JUnit.version>
+		<JUnit.version>4.12</JUnit.version>
 		<mockito.all>1.9.5</mockito.all>
-		<SpringBatch.version>2.1.8.RELEASE</SpringBatch.version>
-		<Spring.version>3.1.0.RELEASE</Spring.version>
+		<SpringBatch.version>3.0.10.RELEASE</SpringBatch.version>
+		<Spring.version>4.3.19.RELEASE</Spring.version>
 		<hsqlDB>2.3.1</hsqlDB>
 	</properties>
 
@@ -156,7 +156,6 @@
 		<module>EsempioBatch</module>
 		<module>InserimentoAnagrafica</module>
 		<module>SpringBatchExamples</module>
-		<module>Esercitazione2</module>
 		<module>InserimentoAnagraficaSoluzione</module>
     <module>ComponentiStandardSpring</module>
   </modules>

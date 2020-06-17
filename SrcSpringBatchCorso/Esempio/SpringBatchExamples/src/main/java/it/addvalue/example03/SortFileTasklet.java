@@ -56,11 +56,11 @@ public class SortFileTasklet<T> implements Tasklet, InitializingBean {
 
 		checkOpenStream(writer, executionContext);
 
-		checkOpenListener(writer);
+		checkOpenListener(writer,chunkContext);
 
 		writer.write(listToSort);
 
-		checkCloseListener(writer);
+		checkCloseListener(writer,chunkContext);
 
 		checkCloseStream(writer);
 
@@ -76,10 +76,10 @@ public class SortFileTasklet<T> implements Tasklet, InitializingBean {
 		}
 	}
 
-	private void checkOpenListener(Object obj) {
+	private void checkOpenListener(Object obj, ChunkContext chunkContext) {
 		if (obj instanceof ChunkListener) {
 			ChunkListener chunkListener = (ChunkListener) obj;
-			chunkListener.beforeChunk();
+			chunkListener.beforeChunk(chunkContext);
 		}
 	}
 
@@ -90,10 +90,10 @@ public class SortFileTasklet<T> implements Tasklet, InitializingBean {
 		}
 	}
 
-	private void checkCloseListener(Object obj) {
+	private void checkCloseListener(Object obj, ChunkContext chunkContext) {
 		if (obj instanceof ChunkListener) {
 			ChunkListener chunkListener = (ChunkListener) obj;
-			chunkListener.afterChunk();
+			chunkListener.afterChunk(chunkContext);
 		}
 	}
 

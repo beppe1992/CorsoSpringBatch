@@ -1,15 +1,17 @@
 package it.addvalue.example04e05.dao;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+
 
 public class BaseDao {
 
-	protected SimpleJdbcTemplate simpleJdbcTemplate;
+	protected JdbcTemplate simpleJdbcTemplate;
 
 	public void setDataSource(DataSource dataSource) {
-	    this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+	    this.simpleJdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
 }
