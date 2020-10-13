@@ -13,7 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<JUnit.version>4.12</JUnit.version>
+		<JUnit.version>4.13.1</JUnit.version>
 		<mockito.all>1.9.5</mockito.all>
 		<SpringBatch.version>3.0.10.RELEASE</SpringBatch.version>
 		<Spring.version>4.3.19.RELEASE</Spring.version>
