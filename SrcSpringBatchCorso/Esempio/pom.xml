@@ -17,7 +17,7 @@
 		<mockito.all>1.9.5</mockito.all>
 		<SpringBatch.version>4.0.0.RELEASE</SpringBatch.version>
 		<Spring.version>5.3.26</Spring.version>
-		<hsqlDB>2.3.1</hsqlDB>
+		<hsqlDB>2.7.1</hsqlDB>
 	</properties>
 
 	<dependencies>
